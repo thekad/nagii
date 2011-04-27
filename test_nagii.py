@@ -5,10 +5,11 @@
 
 import nagii
 
-template = nagii.Host(host_name="", alias="Foo Host",
+template = nagii.NagiosTemplate(name="generic-host",
     address="10.1.100.1", max_check_attempts=1, check_period=5,
     contact_groups="nagiosadmin", notification_interval=5,
     notification_period=960)
+template._set_type('host')
 
 host = nagii.Host(template, host_name="foo_host", alias="Stoopid")
 
