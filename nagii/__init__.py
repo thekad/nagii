@@ -15,9 +15,11 @@ class NagiosObject(object):
     _type = None
 
     def __init__(self, *args, **kwargs):
-#       Set attributes
+#       If we send the parent object, _must_ be the
+#       first unnamed item
         if args:
             self._parent = args[0]
+#       Set attributes
         for k,v in kwargs.items():
             setattr(self, k, v)
 
@@ -25,6 +27,11 @@ class NagiosObject(object):
         self._set_name()
 
     def _validate_attributes(self):
+        """
+        Validates the required list (self._required)
+        against the actual object (possibly inherited)
+        values of this object
+        """
         for required in self._required:
             req = set(required.split('|'))
             fail = True
@@ -41,17 +48,38 @@ class NagiosObject(object):
                 raise AttributeError('The object is incomplete: %s' % reason)
 
     def _set_name(self):
+        """
+        Sets the name string for this object,
+        should be overloaded in all child objects
+        """
         pass
 
     def _public(self):
+        """
+        Returns a dictionary with the (what I consider)
+        public attributes for this object. Something
+        like dir() but awesomer
+        """
         p = [(_, getattr(self, _)) for _ in dir(self) if not _.startswith('_')]
         return dict(p)
 
     @classmethod
     def _get_required(self):
+        """
+        Helper method to get the list of required
+        fields, nothing fancy
+        """
         return self._required
 
     def __getattr__(self, attr):
+        """
+        So this is kinda tricky. This method only
+        gets called when __getattribute__ fails,
+        that is, if the method doesn't exist in this
+        object's scope. However if set a parent
+        object, we should try and return the parent
+        object's value
+        """
         if self._parent:
             return getattr(self._parent, attr)
         else:
