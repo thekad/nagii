@@ -86,10 +86,25 @@ class NagiosObject(object):
             raise AttributeError
 
 
+class NagiosTemplate(NagiosObject):
+    """
+    A simple nagios template object, only thing required
+    should be the name of this object
+    """
+
+    _required = [ 'name' ]
+
+    def __init__(self, *args, **kwargs):
+        NagiosObject.__init__(self, *args, **kwargs)
+
+    def _set_type(self, stype):
+        self._type = stype
+
+
 class NagiosGroup(NagiosObject):
     """
-    Base nagios group object, improves upon NagiosObject by adding
-    member adding support
+    Base nagios group object, improves upon 
+    NagiosObject by adding member adding support
     """
 
     _members = []
