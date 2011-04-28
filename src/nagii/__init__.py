@@ -117,6 +117,9 @@ class NagiosGroup(NagiosObject):
     _member_class = NagiosObject
 
     def __init__(self, *args, **kwargs):
+        if 'members' in kwargs.keys():
+            raise ValueError('You don''t add members as keywords, '
+                'you use the _add_member(obj) method')
         NagiosObject.__init__(self, *args, **kwargs)
 
     def _add_member(self, member):
@@ -124,9 +127,10 @@ class NagiosGroup(NagiosObject):
             'Member "%s" is not a "%s"' % (member, self._member_class)
         if member not in self._members:
             self._members.append(member)
+            self.members = ','.join([ _._name for _ in self._members ])
 
     def _get_members(self):
-        pass
+        return _members
 
 
 class Service(NagiosObject):
