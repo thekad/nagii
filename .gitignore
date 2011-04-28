@@ -3,4 +3,5 @@
 *.swp
 env
 dist
+build
 *.egg-info
