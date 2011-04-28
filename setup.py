@@ -15,6 +15,7 @@ setuptools.setup(
     description = 'A straightforward Nagios modelling library',
     install_requires = [
         'mako',
+        'markdown2',
     ],
     packages = setuptools.find_packages('src'),
     package_dir = { '': 'src' },

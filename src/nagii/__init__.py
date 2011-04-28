@@ -2,6 +2,9 @@
 #
 # -*- mode: python; sh-basic-offset: 4; indent-tabs-mode: nil; coding: utf-8 -*-
 # vim: tabstop=4 softtabstop=4 expandtab shiftwidth=4 fileencoding=utf-8
+#
+# Nagii python modelling library for Nagios
+# Copyright 2011, Jorge Gallegos <kad@blegh.net>
 
 VERSION='0.1'
 
