@@ -21,6 +21,7 @@ class NagiosObject(object):
 #       first unnamed item
         if args:
             self._parent = args[0]
+            kwargs['use'] = self._parent.name
 #       Set attributes
         for k,v in kwargs.items():
             setattr(self, k, v)
