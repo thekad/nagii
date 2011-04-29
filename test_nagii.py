@@ -24,12 +24,16 @@ host_template._set_type('host')
 hosts = []
 
 host_group = nagii.HostGroup(hostgroup_name='all-hosts', alias='all you hosts raise your hands like you don''t care')
+host_group2 = nagii.HostGroup(hostgroup_name='all-hosts2', alias='and again')
 
 for i in xrange(1, 10):
     hosts.append(nagii.Host(host_template, host_name="host_%d" % i, alias="Host number %d" % i, address="10.1.100.%d" % i))
 
 [ host_group._add_member(_) for _ in hosts ]
+for _ in hosts:
+    _._add_to_group(host_group2)
+
 tpl = mako_template.Template(tpl)
-for x in [ host_group, host_template ] + hosts:
+for x in [ host_group, host_group2, host_template ] + hosts:
     print tpl.render(obj=x)
 

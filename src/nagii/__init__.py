@@ -69,13 +69,18 @@ class NagiosObject(object):
         p = [(_, getattr(self, _)) for _ in dir(self) if not _.startswith('_')]
         return dict(p)
 
-    @classmethod
     def _get_required(self):
         """
         Helper method to get the list of required
         fields, nothing fancy
         """
         return self._required
+
+    def _add_to_group(self, *args, **kwargs):
+        """
+        Helper method to add objects to certain groups
+        """
+        raise NotImplementedError
 
     def __getattr__(self, attr):
         """
@@ -151,12 +156,18 @@ class Service(NagiosObject):
         'contacts|contact_groups',
     ]
     _type = 'service'
+    _servicegroups = []
 
     def __init__(self, *args, **kwargs):
         NagiosObject.__init__(self, *args, **kwargs)
 
     def _set_name(self):
         self._name = self.service_description
+
+    def _add_to_group(self, servicegroup):
+        if servicegroup not in self._servicegroups:
+            self._servicegroups.append(servicegroup)
+            self.servicegroups = ','.join([ _._name for _ in self._servicegroups ])
 
 
 class Host(NagiosObject):
@@ -175,12 +186,19 @@ class Host(NagiosObject):
         'notification_period',
     ]
     _type = 'host'
+    _hostgroups = []
 
     def __init__(self, *args, **kwargs):
         NagiosObject.__init__(self, *args, **kwargs)
 
     def _set_name(self):
         self._name = self.host_name
+
+    def _add_to_group(self, hostgroup):
+        #print self, hostgroup, self._hostgroups
+        if hostgroup not in self._hostgroups:
+            self._hostgroups.append(hostgroup)
+            self.hostgroups = ','.join([ _._name for _ in self._hostgroups ])
 
 
 class ServiceGroup(NagiosGroup):
