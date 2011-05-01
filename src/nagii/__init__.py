@@ -166,8 +166,10 @@ class Service(NagiosObject):
 
     def _add_to_group(self, servicegroup):
         if servicegroup not in self._servicegroups:
-            self._servicegroups.append(servicegroup)
-            self.servicegroups = ','.join([ _._name for _ in self._servicegroups ])
+            setattr(self, '_servicegroups',
+                self._servicegroups + [ servicegroup ])
+            setattr(self, 'servicegroups',
+                ','.join([ _._name for _ in self._servicegroups ]))
 
 
 class Host(NagiosObject):
@@ -195,10 +197,11 @@ class Host(NagiosObject):
         self._name = self.host_name
 
     def _add_to_group(self, hostgroup):
-        #print self, hostgroup, self._hostgroups
         if hostgroup not in self._hostgroups:
-            self._hostgroups.append(hostgroup)
-            self.hostgroups = ','.join([ _._name for _ in self._hostgroups ])
+            setattr(self, '_hostgroups',
+                self._hostgroups + [ hostgroup ])
+            setattr(self, 'hostgroups',
+                ','.join([ _._name for _ in self._hostgroups ]))
 
 
 class ServiceGroup(NagiosGroup):
