@@ -76,9 +76,15 @@ class NagiosObject(object):
         """
         return self._required
 
+    def _add_member(self, *args, **kwargs):
+        """
+        Helper method to add members to this group
+        """
+        raise NotImplementedError
+
     def _add_to_group(self, *args, **kwargs):
         """
-        Helper method to add objects to certain groups
+        Helper method to add groups to this object
         """
         raise NotImplementedError
 
@@ -131,8 +137,8 @@ class NagiosGroup(NagiosObject):
         assert isinstance(member, self._member_class), \
             'Member "%s" is not a "%s"' % (member, self._member_class)
         if member not in self._members:
-            self._members.append(member)
-            self.members = ','.join([ _._name for _ in self._members ])
+            setattr(self, '_members', self._members + [ member ])
+            setattr(self, 'members', ','.join([ _._name for _ in self._members ]))
 
     def _get_members(self):
         return _members
