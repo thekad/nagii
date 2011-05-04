@@ -63,11 +63,18 @@ class NagiosObject(object):
     def _public(self):
         """
         Returns a dictionary with the (what I consider)
-        public attributes for this object. Something
-        like dir() but awesomer
+        public and custom attributes for this object.
+        Something like dir() but awesomer
         """
-        p = [(_, getattr(self, _)) for _ in dir(self) if not _.startswith('_')]
-        return dict(p)
+        public = []
+
+        for _ in dir(self):
+            if not _.startswith('_'):
+                public.append((_, getattr(self, _)))
+            elif _.startswith('_custom'):
+                public.append((_[7:], getattr(self, _)))
+
+        return dict(public)
 
     def _get_required(self):
         """
@@ -87,6 +94,13 @@ class NagiosObject(object):
         Helper method to add groups to this object
         """
         raise NotImplementedError
+
+    def _add_custom(self, var, val):
+        """
+        Helper method to add custom variables to this object
+        """
+        var = "_custom" + var
+        setattr(self,var,val)
 
     def __getattr__(self, attr):
         """
