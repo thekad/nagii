@@ -152,7 +152,7 @@ class NagiosGroup(NagiosObject):
             'Member "%s" is not a "%s"' % (member, self._member_class)
         if member not in self._members:
             setattr(self, '_members', self._members + [ member ])
-            setattr(self, 'members', ','.join([ _._name for _ in self._members ]))
+            setattr(self, 'members', ','.join(sorted([ _._name for _ in self._members ])))
 
     def _get_members(self):
         return _members
@@ -189,7 +189,7 @@ class Service(NagiosObject):
             setattr(self, '_servicegroups',
                 self._servicegroups + [ servicegroup ])
             setattr(self, 'servicegroups',
-                ','.join([ _._name for _ in self._servicegroups ]))
+                ','.join(sorted([ _._name for _ in self._servicegroups ])))
 
 
 class Host(NagiosObject):
@@ -221,7 +221,7 @@ class Host(NagiosObject):
             setattr(self, '_hostgroups',
                 self._hostgroups + [ hostgroup ])
             setattr(self, 'hostgroups',
-                ','.join([ _._name for _ in self._hostgroups ]))
+                ','.join(sorted([ _._name for _ in self._hostgroups ])))
 
 
 class ServiceGroup(NagiosGroup):
