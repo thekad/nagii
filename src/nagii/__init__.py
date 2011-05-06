@@ -74,6 +74,9 @@ class NagiosObject(object):
             elif _.startswith('_custom'):
                 public.append((_[7:], getattr(self, _)))
 
+        if isinstance(self,NagiosTemplate):
+            public.append(("register",0))
+
         return dict(public)
 
     def _get_required(self):
