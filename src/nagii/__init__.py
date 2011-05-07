@@ -74,9 +74,6 @@ class NagiosObject(object):
             elif _.startswith('_custom'):
                 public.append((_[7:], getattr(self, _)))
 
-        if isinstance(self,NagiosTemplate):
-            public.append(("register",0))
-
         return dict(public)
 
     def _get_required(self):
@@ -130,6 +127,7 @@ class NagiosTemplate(NagiosObject):
 
     def __init__(self, *args, **kwargs):
         NagiosObject.__init__(self, *args, **kwargs)
+        setattr(self, "register", 0)
 
     def _set_type(self, stype):
         self._type = stype
