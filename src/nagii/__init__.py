@@ -124,10 +124,10 @@ class NagiosTemplate(NagiosObject):
     """
 
     _required = [ 'name' ]
+    register = 0
 
     def __init__(self, *args, **kwargs):
         NagiosObject.__init__(self, *args, **kwargs)
-        setattr(self, 'register', 0)
 
     def _set_type(self, stype):
         self._type = stype
