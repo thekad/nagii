@@ -225,6 +225,39 @@ class Host(NagiosObject):
                 ','.join(sorted([ _._name for _ in self._hostgroups ])))
 
 
+class Contact(NagiosObject):
+    """
+    Nagios contact object
+    """
+
+    _required = [
+        'contact_name',
+        'host_notifications_enabled',
+        'service_notifications_enabled',
+        'host_notification_period',
+        'service_notification_period',
+        'host_notification_options',
+        'service_notification_options',
+        'host_notification_commands',
+        'service_notification_commands',
+    ]
+    _type = 'contact'
+    _contactgroups = []
+
+    def __init__(self, *args, **kwargs):
+        NagiosObject.__init__(self, *args, **kwargs)
+
+    def _set_name(self):
+        self._name = self.contact_name
+
+    def _add_to_group(self, contactgroup):
+        if contactgroup not in self._contactgroups:
+            setattr(self, '_contactgroups',
+                self._contactgroups + [ contactgroup ])
+            setattr(self, 'contactgroups',
+                ','.join(sorted([ _._name for _ in self._contactgroups ])))
+
+
 class ServiceGroup(NagiosGroup):
     """
     Service group object
@@ -261,4 +294,24 @@ class HostGroup(NagiosGroup):
 
     def _set_name(self):
         self._name = self.hostgroup_name
+
+
+class ContactGroup(NagiosGroup):
+    """
+    Contact group object
+    """
+
+    _required = [
+        'contactgroup_name',
+        'alias',
+    ]
+    _type = 'contactgroup'
+    _member_class = Contact
+
+    def __init__(self, *args, **kwargs):
+        NagiosGroup.__init__(self, *args, **kwargs)
+
+    def _set_name(self):
+        self._name = self.contactgroup_name
+
 

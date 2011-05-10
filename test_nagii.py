@@ -37,7 +37,31 @@ for _ in hosts:
     _._add_to_group(host_group4)
     _._add_to_group(host_group3)
 
+
+contact_template = nagii.NagiosTemplate(name='generic-contact',
+    service_notifications_enabled=1,
+    host_notifications_enabled=1,
+    service_notification_period='24x7',
+    host_notification_period='24x7',
+    service_notification_options='w,u,c',
+    host_notification_options='u',
+    service_notification_commands='notify-by-email',
+    host_notification_commands='host-notify-by-email')
+contact_template._set_type('contact')
+
+contacts = []
+
+contact_group = nagii.ContactGroup(contactgroup_name='operations', alias='operations peoples')
+contact_group2 = nagii.ContactGroup(contactgroup_name='unix-admins', alias='unix admin peoples')
+
+contacts.append(nagii.Contact(contact_template, contact_name='motivator', email='motivator@example.com', pager='1234567890@txt.att.net'))
+contacts.append(nagii.Contact(contact_template, contact_name='thekad', email='thekad@example.com', pager='1234567890@tmomail.net'))
+
+[ contact_group._add_member(_) for _ in contacts ]
+contacts[0]._add_to_group(contact_group2)
+
+
 tpl = mako_template.Template(tpl)
-for x in [ host_group, host_group2, host_group3, host_template ] + hosts:
+for x in [ host_group, host_group2, host_group3, host_template ] + hosts + [ contact_group, contact_group2, contact_template ] + contacts:
     print tpl.render(obj=x)
 
