@@ -6,7 +6,7 @@
 # Nagii python modelling library for Nagios
 # Copyright 2011, Jorge Gallegos <kad@blegh.net>
 
-VERSION='0.1'
+VERSION='0.1.1'
 
 
 class NagiosObject(object):

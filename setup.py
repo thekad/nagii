@@ -19,5 +19,8 @@ setuptools.setup(
     ],
     packages = setuptools.find_packages('src'),
     package_dir = { '': 'src' },
-    zip_safe = False,
+    zip_safe = True,
+    keywords = 'nagios',
+    url = 'https://github.com/thekad/nagii',
+    license = 'MIT',
 )
