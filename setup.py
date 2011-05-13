@@ -23,4 +23,13 @@ setuptools.setup(
     keywords = 'nagios',
     url = 'https://github.com/thekad/nagii',
     license = 'MIT',
+    classifiers = [
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: System Administrators',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2.4',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: System :: Monitoring',
+    ],
 )
