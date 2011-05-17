@@ -5,11 +5,12 @@
 
 import setuptools
 
-from src import nagii
+
+VERSION = '0.1.2'
 
 setuptools.setup(
     name = 'nagii',
-    version = nagii.VERSION,
+    version = VERSION,
     author = 'Jorge Gallegos',
     author_email = 'kad@blegh.net',
     description = 'A straightforward Nagios modelling library',
