@@ -6,7 +6,7 @@
 import setuptools
 
 
-VERSION = '0.1.2'
+VERSION = '0.1.3'
 
 setuptools.setup(
     name = 'nagii',
@@ -16,7 +16,6 @@ setuptools.setup(
     description = 'A straightforward Nagios modelling library',
     install_requires = [
         'mako',
-        'markdown2',
     ],
     packages = setuptools.find_packages('src'),
     package_dir = { '': 'src' },
