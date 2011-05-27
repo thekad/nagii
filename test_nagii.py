@@ -7,14 +7,6 @@ from mako import template as mako_template
 
 import nagii
 
-tpl = """
-define ${obj._type} {
-%   for k,v in obj._public().items():
-    ${"%-40s%s" % (k,v)}
-%   endfor
-}
-"""
-
 host_template = nagii.NagiosTemplate(name="generic-host",
     max_check_attempts=1, check_period=5,
     contact_groups="nagiosadmin", notification_interval=5,
@@ -48,6 +40,7 @@ contact_template = nagii.NagiosTemplate(name='generic-contact',
     service_notification_commands='notify-by-email',
     host_notification_commands='host-notify-by-email')
 contact_template._set_type('contact')
+contact_template._custom_command = 'boo'
 
 contacts = []
 
@@ -61,7 +54,6 @@ contacts.append(nagii.Contact(contact_template, contact_name='thekad', email='th
 contacts[0]._add_to_group(contact_group2)
 
 
-tpl = mako_template.Template(tpl)
 for x in [ host_group, host_group2, host_group3, host_template ] + hosts + [ contact_group, contact_group2, contact_template ] + contacts:
-    print tpl.render(obj=x)
+    print x._render()
 
