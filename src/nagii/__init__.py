@@ -6,6 +6,17 @@
 # Nagii python modelling library for Nagios
 # Copyright 2011, Jorge Gallegos <kad@blegh.net>
 
+from mako.template import Template
+
+
+BASIC_TEMPLATE = """
+define ${obj._type} {
+%   for k in sorted(items.keys()):
+    ${"%-40s%s" % (k, items[k])}
+%   endfor
+}
+"""
+
 
 class NagiosObject(object):
     """
@@ -16,6 +27,7 @@ class NagiosObject(object):
     _name = ''
     _parent = None
     _type = None
+    _tpl = None
 
     def __init__(self, *args, **kwargs):
 #       If we send the parent object, _must_ be the
@@ -23,12 +35,27 @@ class NagiosObject(object):
         if args:
             self._parent = args[0]
             kwargs['use'] = self._parent.name
+#       Set the template
+        if '_template' in kwargs.keys():
+            self._tpl = kwargs.pop('_template')
+            assert isinstance(self._tpl, Template)
+        else:
+            self._tpl = Template(BASIC_TEMPLATE)
 #       Set attributes
         for k,v in kwargs.items():
             setattr(self, k, v)
 
-        self._validate_attributes()
         self._set_name()
+
+    def _render(self):
+        """
+        Renders the object as a string and returns it
+        """
+        if not self._tpl:
+            raise NotImplementedError('I couldn''t find a template '
+                'to render myself')
+        self._validate_attributes()
+        return self._tpl.render(obj=self, items=self._public())
 
     def _validate_attributes(self):
         """
